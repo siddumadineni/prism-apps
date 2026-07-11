@@ -134,3 +134,36 @@ window.addEventListener("scroll", () => {
     }
 
 });
+
+/* ==========================================
+   Fetch Latest Version & Download URL
+   ========================================== */
+async function fetchLatestAppInfo() {
+    try {
+        const response = await fetch('/update.json');
+        if (response.ok) {
+            const data = await response.json();
+            
+            // 1. Update the Download button URL
+            const downloadBtn = document.querySelector('.app-card .download');
+            if (downloadBtn && data.downloadUrl) {
+                downloadBtn.href = data.downloadUrl;
+            }
+            
+            // 2. Display the version number as a premium badge next to the title
+            const appTitle = document.querySelector('.app-card h2');
+            if (appTitle) {
+                // Clear any existing version tag to prevent duplication
+                const existingBadge = appTitle.querySelector('.version-badge');
+                if (existingBadge) {
+                    existingBadge.remove();
+                }
+                appTitle.innerHTML += ` <span class="version-badge" style="font-size: 13.5px; color: #ff7a00; margin-left: 8px; font-weight: 600; background: rgba(255, 122, 0, 0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(255, 122, 0, 0.2);">v${data.latestVersion}</span>`;
+            }
+        }
+    } catch (e) {
+        console.error('Failed to load update.json:', e);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', fetchLatestAppInfo);
