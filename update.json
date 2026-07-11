@@ -1,0 +1,16 @@
+{
+    "apps": {
+        "pop_music": {
+            "name": "Pop Music",
+            "latestVersion": "1.0.0",
+            "minVersion": "1.0.0",
+            "versionCode": 1,
+            "downloadUrl": "https://github.com/siddumadineni/PopMusic/releases/latest/download/Pop Music.apk",
+            "releaseNotes": [
+                "Initial release"
+            ],
+            "forceUpdate": false,
+            "lastUpdated": "2026-07-11"
+        }
+    }
+}
