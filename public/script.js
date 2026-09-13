@@ -134,3 +134,45 @@ window.addEventListener("scroll", () => {
     }
 
 });
+
+/* ==========================================
+   Fetch Latest Version & Download URL
+   ========================================== */
+
+const POP_MUSIC_JSON_URL = 'https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/pop-music.json';
+const R2_BASE_URL = 'https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/';
+
+async function fetchLatestAppInfo() {
+    try {
+        // Fetch directly from R2 JSON — updated automatically by publish.ps1
+        const response = await fetch(POP_MUSIC_JSON_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        // 1. Build the full APK download URL from the apkFile path in the JSON
+        const downloadBtn = document.querySelector('.app-card .download');
+        if (downloadBtn && data.apkFile) {
+            downloadBtn.href = R2_BASE_URL + data.apkFile;
+            // Use a direct download instead of opening in a new tab for APKs
+            downloadBtn.setAttribute('download', '');
+        }
+
+        // 2. Display the version number as a premium badge next to the title
+        const appTitle = document.querySelector('.app-card h2');
+        if (appTitle) {
+            // Clear any existing version tag to prevent duplication
+            const existingBadge = appTitle.querySelector('.version-badge');
+            if (existingBadge) {
+                existingBadge.remove();
+            }
+            const versionText = data.versionName || '';
+            if (versionText) {
+                appTitle.innerHTML += ` <span class="version-badge" style="font-size: 13.5px; color: #ff7a00; margin-left: 8px; font-weight: 600; background: rgba(255, 122, 0, 0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(255, 122, 0, 0.2);">v${versionText}</span>`;
+            }
+        }
+    } catch (e) {
+        console.error('Failed to load Pop Music update info:', e);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', fetchLatestAppInfo);
