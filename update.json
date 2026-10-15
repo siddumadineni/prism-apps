@@ -1,9 +1,9 @@
 ﻿{
-    "latestVersion":  "4.3.0",
-    "buildNumber":  56,
-    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.3.0-56.apk",
+    "latestVersion":  "4.4.0",
+    "buildNumber":  57,
+    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.4.0-57.apk",
     "releaseNotes":  [
-                         "Bug fixes"
+                         "Bug fixes in login system"
                      ],
     "forceUpdate":  false,
     "releaseDate":  "2026-10-15"
