@@ -1,10 +1,10 @@
-{
-  "latestVersion": "1.0.4",
-  "buildNumber": 5,
-  "downloadUrl": "https://github.com/siddumadineni/pop-music-2/releases/latest/download/Pop.Music.apk",
-  "releaseNotes": [
-    "See GitHub release for full changelog."
-  ],
-  "forceUpdate": false,
-  "releaseDate": "2026-07-11"
+﻿{
+    "latestVersion":  "4.3.0",
+    "buildNumber":  56,
+    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.3.0-56.apk",
+    "releaseNotes":  [
+                         "Bug fixes"
+                     ],
+    "forceUpdate":  false,
+    "releaseDate":  "2026-10-15"
 }

@@ -143,34 +143,85 @@ const POP_MUSIC_JSON_URL = 'https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/
 const R2_BASE_URL = 'https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/';
 
 async function fetchLatestAppInfo() {
-    try {
-        // Fetch directly from R2 JSON — updated automatically by publish.ps1
-        const response = await fetch(POP_MUSIC_JSON_URL + '?t=' + Date.now());
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
+    let data = null;
 
-        // 1. Build the full APK download URL from the apkFile path in the JSON
+    // 1. Try fetching directly from Cloudflare R2
+    try {
+        const response = await fetch(POP_MUSIC_JSON_URL + '?t=' + Date.now());
+        if (response.ok) {
+            data = await response.json();
+        }
+    } catch (e) {
+        // Direct fetch failed (e.g. CORS restriction)
+    }
+
+    // 2. If direct fetch failed, try same-origin update.json
+    if (!data) {
+        try {
+            const localResponse = await fetch('update.json?t=' + Date.now());
+            if (localResponse.ok) {
+                const localData = await localResponse.json();
+                data = {
+                    versionName: localData.latestVersion,
+                    versionCode: localData.buildNumber,
+                    downloadUrl: localData.downloadUrl
+                };
+            }
+        } catch (e) {
+            // Local fetch failed
+        }
+    }
+
+    // 3. Fallback to CORS proxy if still not resolved
+    if (!data) {
+        try {
+            const proxyRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(POP_MUSIC_JSON_URL)}&t=${Date.now()}`);
+            if (proxyRes.ok) {
+                data = await proxyRes.json();
+            }
+        } catch (e) {}
+    }
+
+    if (!data) return;
+
+    try {
+        // 1. Build the full APK download URL
         const downloadBtn = document.getElementById('popMusicDownload') || document.querySelector('.app-card .download');
-        if (downloadBtn && data.apkFile) {
-            downloadBtn.href = R2_BASE_URL + data.apkFile;
+        let downloadUrl = data.downloadUrl;
+        if (!downloadUrl && data.apkFile) {
+            downloadUrl = data.apkFile.startsWith('http') ? data.apkFile : R2_BASE_URL + data.apkFile;
+        }
+
+        if (downloadBtn && downloadUrl) {
+            downloadBtn.href = downloadUrl;
             downloadBtn.setAttribute('target', '_blank');
         }
 
         // 2. Display the version number as a premium badge next to the title
         const appTitle = document.querySelector('.app-card h2');
         if (appTitle) {
-            // Clear any existing version tag to prevent duplication
             const existingBadge = appTitle.querySelector('.version-badge');
             if (existingBadge) {
                 existingBadge.remove();
             }
-            const versionText = data.versionName || '';
+            const versionText = data.versionName || data.latestVersion || '';
             if (versionText) {
-                appTitle.innerHTML += ` <span class="version-badge" style="font-size: 13.5px; color: #ff7a00; margin-left: 8px; font-weight: 600; background: rgba(255, 122, 0, 0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(255, 122, 0, 0.2);">v${versionText}</span>`;
+                const badge = document.createElement('span');
+                badge.className = 'version-badge';
+                badge.style.fontSize = '13.5px';
+                badge.style.color = '#ff7a00';
+                badge.style.marginLeft = '8px';
+                badge.style.fontWeight = '600';
+                badge.style.background = 'rgba(255, 122, 0, 0.1)';
+                badge.style.padding = '4px 10px';
+                badge.style.borderRadius = '12px';
+                badge.style.border = '1px solid rgba(255, 122, 0, 0.2)';
+                badge.textContent = `v${versionText}`;
+                appTitle.appendChild(badge);
             }
         }
     } catch (e) {
-        console.error('Failed to load Pop Music update info:', e);
+        console.error('Failed to process Pop Music update info:', e);
     }
 }
 
