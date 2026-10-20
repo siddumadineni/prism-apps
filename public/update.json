@@ -1,9 +1,9 @@
 ﻿{
-    "latestVersion":  "4.7.0",
-    "buildNumber":  61,
-    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.7.0-61.apk",
+    "latestVersion":  "4.7.1",
+    "buildNumber":  62,
+    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.7.1-62.apk",
     "releaseNotes":  [
-                         "UI Change In Mobile Player"
+                         "Lag Fix"
                      ],
     "forceUpdate":  false,
     "releaseDate":  "2026-10-20"
