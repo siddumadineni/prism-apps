@@ -1,10 +1,10 @@
 ﻿{
-    "latestVersion":  "4.8.0",
-    "buildNumber":  67,
-    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.8.0-67.apk",
+    "latestVersion":  "4.9.0",
+    "buildNumber":  68,
+    "downloadUrl":  "https://pub-3ccbcbc9a4c047eb8f027194eb5f2a3f.r2.dev/releases/Pop-Music-v4.9.0-68.apk",
     "releaseNotes":  [
-                         "API issue fixed"
+                         "Cast Sync Fixed"
                      ],
     "forceUpdate":  false,
-    "releaseDate":  "2026-10-21"
+    "releaseDate":  "2026-10-22"
 }
